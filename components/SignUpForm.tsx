@@ -14,21 +14,24 @@ const SignUpForm = () => {
         return password === passwordConfirmation
     }
 
-    const signUp = () => {
-        if (checkPasswordConfirmation(password, passwordConfirmation)) {
-            async (e: { preventDefault: () => void; }) => {
-                e.preventDefault()
+    const signUp = async (e: { preventDefault: () => void; }) => {
+        e.preventDefault()
 
-                await createUserWithEmailAndPassword(auth, email, password)
-                    .then((userCredential) => {
-                        console.log(userCredential.user)
-                        const user = userCredential.user;
-                    })
-                    .catch((error) => {
-                        const errorCode = error.code;
-                        const errorMessage = error.message;
-                    })
-            }
+        if (checkPasswordConfirmation(password, passwordConfirmation)) {
+            console.log("async didnt started")
+
+            await createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    console.log(".then started")
+                    const user = userCredential.user;
+                    alert("User created")
+                })
+                .catch((error) => {
+                    console.log("erroring")
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    alert(errorCode)
+                })
         }
         else {
             alert("The Password & it's confirmation are different")
